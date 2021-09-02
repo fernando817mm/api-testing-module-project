@@ -5,11 +5,14 @@ const cors = require("cors");
 const morgan = require("morgan");
 const yup = require("yup");
 
+const path = require("path");
+
 const server = express();
 
 server.use(express.json());
 server.use(cors());
 server.use(morgan("dev"));
+server.use(express.static(path.join(__dirname, "client/build")));
 
 const PORT = process.env.PORT || 5000;
 
@@ -79,9 +82,7 @@ server.post("/api/login", (req, res, next) => {
 });
 
 server.get("*", (req, res) => {
-  res.send(`
-    <h1>Fernando Martinez</h1>
-  `);
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
 server.use((err, req, res, next) => {
